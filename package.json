@@ -5,7 +5,7 @@
   "author": "lyctea",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "dev": "nodemon -w ./server -w ./start.js --exec node ./start.js",
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node server/index.js",
     "generate": "nuxt generate",
@@ -13,19 +13,31 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.0.0",
+    "babel-core": "^6.26.3",
+    "babel-polyfill": "^6.26.0",
     "cross-env": "^5.2.0",
-    "nuxt": "^2.0.0",
+    "esm": "^3.0.84",
     "koa": "^2.5.2",
-    "@nuxtjs/axios": "^5.0.0"
+    "koa-router": "^7.4.0",
+    "nuxt": "^2.0.0",
+    "path": "^0.12.7",
+    "ramda": "^0.26.1",
+    "sha1": "^1.1.1"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0",
     "babel-eslint": "^8.2.1",
+    "babel-preset-latest-node": "0.2.2",
+    "babel-preset-stage-3": "6.24.1",
     "eslint": "^5.0.1",
-    "eslint-loader": "^2.0.0",
-    "eslint-plugin-vue": "^4.0.0",
     "eslint-config-prettier": "^3.1.0",
+    "eslint-loader": "^2.0.0",
     "eslint-plugin-prettier": "2.6.2",
+    "eslint-plugin-vue": "^4.0.0",
+    "nodemon": "^1.11.0",
     "prettier": "1.14.3"
-  }
+  },
+  "main": "index.js",
+  "module": "main.js",
+  "license": "MIT"
 }
