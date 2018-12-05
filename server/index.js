@@ -7,7 +7,9 @@ const { Nuxt, Builder } = require('nuxt')
 const r = path => resolve(__dirname, path)
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3000
-const MIDDLEWARES = ['router']
+
+// 引入中间件
+const MIDDLEWARES = ['database', 'router']
 
 // Import and Set Nuxt.js options
 let config = require('../nuxt.config.js')

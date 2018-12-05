@@ -6,6 +6,9 @@ export const router = app => {
   const router = new Router()
 
   router.get('/wechat-hear', (ctx, next) => {
+    // import wechat，执行获取token的方法
+    require('../wechat')
+
     const token = config.wechat.token
     const { signature, nonce, timestamp, echostr } = ctx.query
 
@@ -13,8 +16,7 @@ export const router = app => {
     const sha = sha1(str)
 
     if (sha === signature) {
-      console.log('true')
-      ctx.body = echostr
+      ctx.body = echostr || '2323'
     } else {
       ctx.body = 'Failed'
     }
