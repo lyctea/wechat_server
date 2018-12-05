@@ -29,28 +29,21 @@ export default function(opts, reply) {
         encoding: ctx.charset
       })
 
+      // 解析从微信 post 上来的数据，解析为对象
       const content = await util.parseXML(data)
-      // const message = util.formatMessage(content.xml)
+      const message = util.formatMessage(content.xml)
 
-      console.log(content)
-      ctx.weixin = {}
+      ctx.weixin = message
 
+      // 根据消息类型处理回复
       await reply.apply(ctx, [ctx, next])
 
       const replyBody = ctx.body
       const msg = ctx.weixin
-      // const xml = util.tpl(replyBody, msg)
 
-      console.log(replyBody)
-
-      const xml = `<xml>
-      <ToUserName><![CDATA[${content.xml.FromUserName[0]}]]></ToUserName>
-      <FromUserName><![CDATA[${content.xml.ToUserName[0]}]]></FromUserName>
-      <CreateTime>12345678</CreateTime>
-      <MsgType><![CDATA[text]]></MsgType>
-      <Content><![CDATA[${replyBody}]]></Content>
-      </xml>`
-
+      // tpl模板生成回复的xml数据，返回给微信的xml，注意：中间不能有空格
+      let xml = util.tpl(replyBody, msg)
+      
       ctx.status = 200
       ctx.type = 'application/xml'
       ctx.body = xml
