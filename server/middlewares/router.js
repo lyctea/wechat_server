@@ -9,16 +9,21 @@ export const router = app => {
 
   router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
 
-  router.get('/upload', (ctx, next) => {
+  router.get('/upload', async (ctx, next) => {
     let mp = require('../wechat')
     let client = mp.getWechat()
 
     // 调用 uploadMaterial， 并传递参数
-    client.handle(
+    const data = client.handle(
       'uploadMaterial',
       'video',
-      resolve(__dirname, '../../ice.mp4')
+      resolve(__dirname, '../../ice.mp4'),
+      {
+        type: 'video',
+        description: '{"title": "测试数据", "introduction": "介绍描述"}'
+      }
     )
+    console.log(data)
   })
 
   app.use(router.routes()).use(router.allowedMethods())

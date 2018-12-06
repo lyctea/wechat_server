@@ -2,6 +2,7 @@ import request from 'request-promise'
 // import formstream from 'formsrteam'
 import fs from 'fs'
 import path from 'path'
+import * as _ from 'lodash'
 
 const base = 'https://api.weixin.qq.com/cgi-bin/'
 const api = {
@@ -13,7 +14,7 @@ const api = {
   permanent: {
     upload: base + 'material/add_material?',
     uploadNews: base + 'media/add_news?',
-    uploadNewsPick: base + 'media/uploadimg?',
+    uploadNewsPic: base + 'media/uploadimg?',
     fetch: base + 'media/get_material',
     del: base + 'media/del_material',
     update: base + 'media/update_news',
@@ -108,7 +109,7 @@ export default class Wechat {
     const tokenData = await this.fetchAccessToken()
     const options = await this[operation](tokenData.access_token, ...args)
     const data = await this.request(options)
-
+    console.log(data)
     return data
   }
 
@@ -124,9 +125,12 @@ export default class Wechat {
     let url = api.temporary.upload // 临时文件api
 
     if (permanent) {
-      url = api.permanent.uploadNewsPic
-
+      url = api.permanent.upload
       _.extend(form, permanent)
+    }
+
+    if (type === 'pic') {
+      url = api.permanent.uploadNewsPic
     }
 
     if (type === 'news') {
@@ -145,7 +149,7 @@ export default class Wechat {
       uploadUrl += '&type=' + type
     } else {
       // form.field('access_token', access_token)
-      form.access_token = access_token
+      form.access_token = token
     }
 
     const options = {
@@ -160,6 +164,7 @@ export default class Wechat {
       options.formData = form
     }
 
+    console.log(options)
     return options
   }
 }
