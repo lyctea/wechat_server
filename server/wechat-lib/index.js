@@ -18,6 +18,16 @@ const api = {
     update: base + 'media/update_news',
     count: base + 'media/get_materialcount',
     batch: base + 'media/batchget_material'
+  },
+  tag: {
+    create: base + 'tags/create?',
+    fetch: base + 'tags/get?',
+    update: base + 'tags/update?',
+    del: base + 'tags/delete?',
+    fetchUsers: base + 'user/tag/get?',
+    batchTag: base + 'members/batchtagging?',
+    batchUnTag: base + 'members/batchuntagging?',
+    getTagList: base + 'members/getidlist?'
   }
 }
 
@@ -235,5 +245,116 @@ export default class Wechat {
     const url = api.permanent.batch + 'access_token=' + token
 
     return { method: 'POST', url, body: options }
+  }
+
+  /**
+   * 创建标签
+   * @param token
+   * @param name
+   * @returns {{method: string, url: string, body: {tag: {name: *}}}}
+   */
+  createTag(token, name) {
+    const form = {
+      tag: {
+        name
+      }
+    }
+    const url = api.tag.create + 'access_token=' + token
+    return { method: 'POST', url, body: form }
+  }
+
+  /**
+   * 获取公众号已创建的标签
+   * @param token
+   * @returns {{url: string}}
+   */
+  fetchTags(token) {
+    const url = api.tag.fetch + 'access_token=' + token
+    return { url }
+  }
+
+  /**
+   * 更新标签
+   * @param token
+   * @param tagId
+   * @param name
+   * @returns {{method: string, url: string, body: {tag: {id: *, name: *}}}}
+   */
+  updateTag(token, tagId, name) {
+    const form = {
+      tag: {
+        id: tagId,
+        name
+      }
+    }
+    const url = api.tag.update + 'access_token=' + token
+    return { method: 'POST', url, body: form }
+  }
+
+  /**
+   * 删除标签
+   * @param token
+   * @param tagId
+   * @returns {{method: string, url: string, body: {tag: {id: *}}}}
+   */
+  delTag(token, tagId) {
+    const form = {
+      tag: {
+        id: tagId
+      }
+    }
+    const url = api.tag.del + 'access_token=' + token
+    return { method: 'POST', url, body: form }
+  }
+
+  /**
+   * 获取用户下标签列表
+   * @param token
+   * @param tagId
+   * @param openId
+   * @returns {{method: string, url: string, body: {tagid: *, next_openid: (*|string)}}}
+   */
+  fetchTagUsers(token, tagId, openId) {
+    let form = {
+      tagid: tagId,
+      next_openid: openId || ''
+    }
+
+    const url = api.tag.fetchUsers + 'access_token=' + token
+    return { method: 'POST', url, body: form }
+  }
+
+  /**
+   * 批量为用户打标签,去标签
+   * @param token
+   * @param openIdList
+   * @param tagId
+   * @returns {{method: string, url: string, body: {openid_list: *, tagid: *}}}
+   */
+  batchTag(token, openIdList, tagId, unTag) {
+    const form = {
+      openid_list: openIdList,
+      tagid: tagId
+    }
+
+    let url = unTag ? api.tag.batchUnTag : api.tag.batchTag
+
+    url += 'access_token=' + token
+    return { method: 'POST', url, body: form }
+  }
+
+  /**
+   * 获取用户标签列表
+   * @param token
+   * @param openId
+   * @returns {{method: string, url: string, body: {openid: *}}}
+   */
+  getTagList(token, openId) {
+    const form = {
+      openid: openId
+    }
+
+    const url = api.tag.getTagList + 'access_token=' + token
+    return { method: 'POST', url, body: form }
   }
 }
