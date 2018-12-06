@@ -13,15 +13,24 @@ export const router = app => {
     let mp = require('../wechat')
     let client = mp.getWechat()
 
+    const news = {
+      articles: [
+        {
+          title: 'SSR',
+          thumb_media_id: 'dnCq0cRKISK2IQT_HegK40T4WDHL665--jXKuQIpHWw',
+          author: 'lyc',
+          digest: '没有',
+          show_cover_pic: 1,
+          content: '很高让沟通哈',
+          need_open_comment: 1,
+          content_source_url: 'http://www.baidu.com'
+        }
+      ]
+    }
+    //若新增的是多图文素材，则此处应还有几段articles结构
+
     // 调用 uploadMaterial， 并传递参数
-    const data = client.handle(
-      'uploadMaterial',
-      'video',
-      resolve(__dirname, '../../ice.jpg'),
-      {
-        type: 'image'
-      }
-    )
+    const data = client.handle('uploadMaterial', 'news', news, {})
     console.log(data)
   })
 

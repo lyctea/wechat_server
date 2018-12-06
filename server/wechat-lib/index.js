@@ -137,9 +137,6 @@ export default class Wechat {
       url = api.permanent.uploadNews
       form = material
     } else {
-      // form = formstream()
-      // const stat = await statFile(material)
-      // form.file('media', material, path.basename(material), stat.size)
       form.media = fs.createReadStream(material)
     }
 
@@ -148,9 +145,12 @@ export default class Wechat {
     if (!permanent) {
       uploadUrl += '&type=' + type
     } else {
-      // form.field('access_token', access_token)
-      form.access_token = token
+      if (type !== 'news') {
+        form.access_token = token
+      }
     }
+    
+    console.log(form)
 
     const options = {
       method: 'POST',
@@ -163,8 +163,9 @@ export default class Wechat {
     } else {
       options.formData = form
     }
-
+    
     console.log(options)
+
     return options
   }
 }
