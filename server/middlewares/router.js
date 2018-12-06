@@ -17,10 +17,9 @@ export const router = app => {
     const data = client.handle(
       'uploadMaterial',
       'video',
-      resolve(__dirname, '../../ice.mp4'),
+      resolve(__dirname, '../../ice.jpg'),
       {
-        type: 'video',
-        description: '{"title": "测试数据", "introduction": "介绍描述"}'
+        type: 'image'
       }
     )
     console.log(data)
