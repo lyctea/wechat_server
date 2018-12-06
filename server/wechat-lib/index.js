@@ -28,6 +28,15 @@ const api = {
     batchTag: base + 'members/batchtagging?',
     batchUnTag: base + 'members/batchuntagging?',
     getTagList: base + 'members/getidlist?'
+  },
+  user: {
+    remark: base + 'user/info/updateremark?',
+    info: base + 'user/info?', //每个用户对每个公众号是唯一的，对于不同公众号，用一用户openid不同
+    batchInfo: base + 'user/info/batchget?',
+    fetchUserList: base + 'user/get?',
+    getBlackList: base + 'tags/embers/getblacklist?',
+    batchBlackList: base + 'tags/members/batchblacklist?',
+    batchUnBlackList: base + 'tags/members/batchunblacklist?'
   }
 }
 
@@ -356,5 +365,65 @@ export default class Wechat {
 
     const url = api.tag.getTagList + 'access_token=' + token
     return { method: 'POST', url, body: form }
+  }
+
+  /**
+   * 设置用户备注名
+   * @param token
+   * @param openId
+   * @param remark
+   * @returns {{method: string, url: string, body: {openid: *, remark: *}}}
+   */
+  remarkUser(token, openId, remark) {
+    const form = {
+      openid: openId,
+      remark: remark
+    }
+    const url = api.user.remark + 'access_token=' + token
+    return { method: 'POST', url, body: form }
+  }
+
+  /**
+   * 获取用户信息
+   * @param token
+   * @param openId
+   * @param lang
+   * @returns {{url: string}}
+   */
+  getUserInfo(token, openId, lang) {
+    const url = `${api.user.info}
+    access_token=${token}
+    &openid${openId}
+    &lang=${lang || 'zh_CN'}`
+
+    return { url }
+  }
+
+  /**
+   * 批量获取用户信息
+   * @param token
+   * @param userList
+   * @returns {{method: string, url: string, body: {user_list: *}}}
+   */
+  batchUserInfo(token, userList) {
+    const url = api.user.batchInfo + 'access_token=' + token
+    const form = {
+      user_list: userList
+    }
+    return { method: 'POST', url, body: form }
+  }
+
+  /**
+   *  获取用户列表
+   * @param token
+   * @param openId
+   * @returns {{url: string}}
+   */
+  batchUserList(token, openId) {
+    const url = `${api.user.fetchUserList}
+    access_token=${token}
+    &next_openid${openId || ''}`
+
+    return { url }
   }
 }
