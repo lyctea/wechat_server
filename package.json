@@ -19,6 +19,7 @@
     "cross-env": "^5.2.0",
     "ejs": "^2.6.1",
     "esm": "^3.0.84",
+    "formstream": "^1.1.0",
     "fs": "^0.0.1-security",
     "koa": "^2.5.2",
     "koa-router": "^7.4.0",
