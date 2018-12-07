@@ -1,6 +1,9 @@
 export default async (ctx, next) => {
   const message = ctx.weixin
 
+  let mp = require('../wechat')
+  let client = mp.getWechat()
+
   if (message.MsgType === 'event') {
     if (message.Event === 'subscribe') {
       ctx.body = `Welcome`
@@ -10,6 +13,21 @@ export default async (ctx, next) => {
       ctx.body = message.Latitude + ' : ' + message.Longitude
     }
   } else if (message.MsgType === 'text') {
+    // 测试接口
+    if (message.Content === '1') {
+      let userList = [
+        'oKeyM1SxrrYfDm7N40Q68TtRyjtU',
+        'oKeyM1WsyFJQQfBYGOUcUwlVvxG4',
+        'oKeyM1eeYGmnf9ahgToIQMew4fRk',
+        'oKeyM1Tt9G-P-V2u2Wuk4--oKfbI'
+      ]
+
+      const data = await client.handle(
+        'batchUserInfo',
+        userList.map(user => ({ openid: user, lang: 'zh_CN' }))
+      )
+      console.log(data)
+    }
     ctx.body = message.Content
   } else if (message.MsgType === 'image') {
     ctx.body = {

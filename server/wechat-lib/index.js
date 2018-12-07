@@ -126,7 +126,6 @@ export default class Wechat {
     const tokenData = await this.fetchAccessToken()
     const options = await this[operation](tokenData.access_token, ...args)
     const data = await this.request(options)
-    console.log(data)
     return data
   }
 
@@ -391,10 +390,9 @@ export default class Wechat {
    * @returns {{url: string}}
    */
   getUserInfo(token, openId, lang) {
-    const url = `${api.user.info}
-    access_token=${token}
-    &openid${openId}
-    &lang=${lang || 'zh_CN'}`
+    const url = `${
+      api.user.info
+    }access_token=${token}&openid${openId}&lang=${lang || 'zh_CN'}`
 
     return { url }
   }
@@ -419,10 +417,10 @@ export default class Wechat {
    * @param openId
    * @returns {{url: string}}
    */
-  batchUserList(token, openId) {
-    const url = `${api.user.fetchUserList}
-    access_token=${token}
-    &next_openid${openId || ''}`
+  fetchUserList(token, openId) {
+    const url = `${
+      api.user.fetchUserList
+    }access_token=${token}&next_openid${openId || ''}`
 
     return { url }
   }
