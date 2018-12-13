@@ -27,7 +27,13 @@ export default async (ctx, next) => {
         userList.map(user => ({ openid: user, lang: 'zh_CN' }))
       )
       console.log(data)
+    } else if (message.Content === '2') {
+      const menu = require('./menu').default
+      await client.handle('delMenu')
+      const result = await client.handle('createMenu', menu)
+      console.log(result)
     }
+
     ctx.body = message.Content
   } else if (message.MsgType === 'image') {
     ctx.body = {

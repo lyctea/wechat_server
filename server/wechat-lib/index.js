@@ -37,6 +37,14 @@ const api = {
     getBlackList: base + 'tags/embers/getblacklist?',
     batchBlackList: base + 'tags/members/batchblacklist?',
     batchUnBlackList: base + 'tags/members/batchunblacklist?'
+  },
+  menu: {
+    create: base + 'menu/create?',
+    get: base + 'menu/get?',
+    del: base + 'menu/del?',
+    addCondition: base + 'menu/addconditional?',
+    delCondition: base + 'menu/delconditional?',
+    getInfo: base + 'get_current_selfmenu_info'
   }
 }
 
@@ -421,6 +429,49 @@ export default class Wechat {
     const url = `${
       api.user.fetchUserList
     }access_token=${token}&next_openid${openId || ''}`
+
+    return { url }
+  }
+
+  createMenu(token, menu) {
+    const url = api.menu.create + 'access_token=' + token
+    return { method: 'POST', url, body: menu }
+  }
+
+  getMenu(token) {
+    const url = api.menu.get + 'access_token=' + token
+    return { url }
+  }
+
+  delMenu(token) {
+    const url = api.menu.del + 'access_token=' + token
+    return { url }
+  }
+
+  addConditionMenu(token, menu, rule) {
+    const url = api.menu.addCondition + 'access_token=' + token
+
+    const form = {
+      button: menu,
+      matchrule: rule
+    }
+
+    return { method: 'POST', url, body: form }
+  }
+
+  delConditionMenu(token, menuId) {
+    const url = api.menu.delCondition + 'access_token=' + token
+
+    const form = {
+      button: menu,
+      matchrule: rule
+    }
+
+    return { method: 'POST', url, body: form }
+  }
+
+  getCurrentMenuInfo(token) {
+    const url = api.menu.getInfo + 'access_token=' + token
 
     return { url }
   }
